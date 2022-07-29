@@ -1,0 +1,29 @@
+{
+  "name": "mini-vue",
+  "version": "1.0.0",
+  "description": "基于Vue.js设计的min-vue",
+  "main": "./src/index.js",
+  "output": "./dist",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "rm -rf dist/** && rollup -w -c ./scripts/rollup.dev.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ACE0220/mini-vue.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ACE0220/mini-vue/issues"
+  },
+  "homepage": "https://github.com/ACE0220/mini-vue#readme",
+  "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "rollup": "^2.77.2",
+    "rollup-plugin-babel": "^4.4.0"
+  }
+}
