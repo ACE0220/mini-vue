@@ -1,4 +1,4 @@
-import {initMixin} from './instance/init'
+import {initMixin} from './core/instance/init'
 
 function MiniVue(options) {
     this._init(options);
