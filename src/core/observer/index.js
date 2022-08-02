@@ -29,7 +29,6 @@ export function defineReactive(target, key, value) {
     observer(value);
     Object.defineProperty(target, key, {
         get() {
-            console.log(`触发${key}的get`);
             if(Dep.target) {
                 dep.depend();
             }
@@ -37,7 +36,6 @@ export function defineReactive(target, key, value) {
         },
         set(newVal) {
           if(newVal === value) return;
-          console.log(`触发${key}的set`);
           observer(newVal);
           value = newVal;
           dep.notify();
