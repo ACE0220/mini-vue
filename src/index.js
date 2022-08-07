@@ -1,11 +1,9 @@
-import {initMixin} from './instance/init'
+import { initMixin } from "./core/instance/init";
 
-function MiniVue(options) {
+function Vue(options) {
     this._init(options);
 }
 
-initMixin(MiniVue)
+initMixin(Vue);
 
-export default MiniVue;
-
-
+export default Vue;

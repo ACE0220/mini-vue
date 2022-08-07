@@ -13,7 +13,7 @@ module.exports = {
     input: pkg.main,
     output: {
         file: resolve('../', pkg.output, "minivue.dev.js"),
-        name: "MiniVue",
+        name: "Vue",
         format: 'umd',
         sourcemap: true
     },
