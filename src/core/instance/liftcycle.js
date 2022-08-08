@@ -1,0 +1,12 @@
+export function initLifeCycle(Vue) {
+    Vue.prototype._update = function() {
+        console.log('update');
+    }
+    Vue.prototype._render = function() {
+        console.log('render');
+    }
+}
+
+export function mountComponent(vm, el) {
+    vm._update(vm._render());
+}
