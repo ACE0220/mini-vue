@@ -5,7 +5,7 @@ export function initLifeCycle(Vue) {
     Vue.prototype._update = function(vnode) {
         const vm = this;
         const el = vm.$el;
-        patch(el, vnode);
+        vm.$el = patch(el, vnode);
     }
     Vue.prototype._c = function() {
         return createElmVNode(this, ...arguments);
@@ -18,7 +18,6 @@ export function initLifeCycle(Vue) {
         return JSON.stringify(value);
     }
     Vue.prototype._render = function() {
-        console.log(this.$options.render)
         const vm = this;
         return vm.$options.render.call(vm);
     }

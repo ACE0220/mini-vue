@@ -32,6 +32,11 @@
             }
         }
     })
+
+    setTimeout(() => {
+        vm.name = 'test';
+        vm._update(vm._render());
+    }, 3000)
     
 </script>
 
