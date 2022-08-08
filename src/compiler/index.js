@@ -32,7 +32,7 @@ function gen(node) {
             while(match = defaultTagRE.exec(text)) {
                 let index = match.index;
                 if(index > lastIndex) {
-                    tokens.push()
+                    tokens.push(JSON.stringify(text.slice(lastIndex, index)))
                 }
                 tokens.push(`_s(${match[1].trim()})`)
                 lastIndex = index + match[0].length; 

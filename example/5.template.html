@@ -10,9 +10,10 @@
 
 <body>
     <div id="app" style="color:red">
-        <div style="color: red">
+        <div style="color: red" key="123">
             {{name}} hello {{age}} hello
         </div>
+        <span>world</span>
     </div>
 </body>
 <script src="../dist/minivue.dev.js"></script>
@@ -21,7 +22,7 @@
         el: '#app',
         data() {
             return {
-                name: 'zf',
+                name: 'zf111',
                 age: 30,
                 address: {
                     city: '广州',
