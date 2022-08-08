@@ -1,3 +1,6 @@
+import { parseHTML } from "./html-parser"
+
+
 export function compileToFunction(template) {
-    console.log(template);
+    let ast = parseHTML(template);
 }
