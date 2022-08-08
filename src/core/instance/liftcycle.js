@@ -1,5 +1,6 @@
 import { createElmVNode, createTextVNode } from "../../vdom";
 import { patch } from "../../vdom/patch";
+import Watcher from "../observer/watcher";
 
 export function initLifeCycle(Vue) {
     Vue.prototype._update = function(vnode) {
@@ -25,5 +26,8 @@ export function initLifeCycle(Vue) {
 
 export function mountComponent(vm, el) {
     vm.$el = el;
-    vm._update(vm._render());
+    const updateComponent = function() {
+        vm._update(vm._render());
+    }
+    new Watcher(vm, updateComponent, true)
 }
