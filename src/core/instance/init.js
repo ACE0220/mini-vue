@@ -1,6 +1,6 @@
 import { compileToFunction } from "../../compiler";
 import { callHook, mountComponent } from "./liftcycle";
-import { mergeOption } from "./mixins";
+import { mergeOption } from "../../global-api/mixins";
 import { initState } from "./state";
 
 export function initMixin(Vue) {

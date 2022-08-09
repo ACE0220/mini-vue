@@ -3,16 +3,25 @@ import Dep, { popTarget, pushTarget } from "./dep";
 let id = 0;
 
 class Watcher {
-    constructor(vm, fn, option) {
+    constructor(vm, exprOrFn, option, cb) {
         this.vm = vm;
         this.id = id++;
         this.renderWatcher = option;
-        this.getter = fn;
+        if(typeof exprOrFn === 'string') {
+            this.getter = function() {
+                return vm[exprOrFn];
+            }
+        } else {
+            this.getter = exprOrFn;
+        }
+        
+        this.cb = cb;
         this.deps = [];
         this.depsID = new Set();
         this.lazy = option.lazy;
         this.dirty = this.lazy;
-        this.lazy ? undefined : this.get();
+        this.user = option.user; // 标识是不是用户自己的watcher
+        this.value = this.lazy ? undefined : this.get();
     }
     evaluate() {
         this.value = this.get(); // 获取用户函数返回值，标识为脏
@@ -41,7 +50,11 @@ class Watcher {
         
     }
     run() {
-        this.get();
+        let oldValue = this.value;
+        let newValue = this.get();
+        if(this.user) {
+            this.cb.call(this.vm, newValue, oldValue);
+        }
     }
     depend() {
         let i = this.deps.length;
