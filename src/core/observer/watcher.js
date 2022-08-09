@@ -25,8 +25,50 @@ class Watcher {
         }
     }
     update() {
-        console.log('update');
+        queueWatcher(this);
+    }
+    run() {
         this.get();
+    }
+}
+
+let queue = [];
+let has = {};
+let pending = false;
+
+function flushSchedulerQueue() {
+    let flushQueue = queue.slice(0);
+    queue = [];
+    has = {};
+    pending = false;
+    flushQueue.forEach(q => q.run());
+}
+
+function queueWatcher(watcher) {
+    const id = watcher.id;
+    if(!has[id]) {
+        queue.push(watcher);
+        has[id] = true;
+        if(!pending) {
+            nextTick(flushSchedulerQueue, 0);
+            pending = true;
+        }
+    }
+}
+
+let callback = [];
+let waiting = false;
+function flushCallbacks() {
+    waiting = false;
+    let cbs = callback.slice(0);
+    callback = [];
+    cbs.forEach(cb => cb());
+}
+export function nextTick(cb) {
+    callback.push(cb);
+    if(!waiting) {
+        Promise.resolve().then(flushCallbacks)
+        waiting = true;
     }
 }
 
