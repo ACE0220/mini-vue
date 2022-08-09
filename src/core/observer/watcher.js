@@ -1,20 +1,28 @@
-import Dep from "./dep";
+import Dep, { popTarget, pushTarget } from "./dep";
 
 let id = 0;
 
 class Watcher {
     constructor(vm, fn, option) {
+        this.vm = vm;
         this.id = id++;
         this.renderWatcher = option;
         this.getter = fn;
         this.deps = [];
         this.depsID = new Set();
-        this.get();
+        this.lazy = option.lazy;
+        this.dirty = this.lazy;
+        this.lazy ? undefined : this.get();
+    }
+    evaluate() {
+        this.value = this.get(); // 获取用户函数返回值，标识为脏
+        this.dirty = false;
     }
     get() {
-        Dep.target = this;
-        this.getter();
-        Dep.target = null;
+        pushTarget(this)
+        let value = this.getter.call(this.vm);
+        popTarget();
+        return value;
     }
     addDep(dep) {
         let id = dep.id;
@@ -25,10 +33,21 @@ class Watcher {
         }
     }
     update() {
-        queueWatcher(this);
+        if(this.lazy) {
+            this.dirty = true;
+        } else {
+            queueWatcher(this);
+        }
+        
     }
     run() {
         this.get();
+    }
+    depend() {
+        let i = this.deps.length;
+        while(i--) {
+            this.deps[i].depend(); // 让计算属性watcher收集渲染watcher
+        }
     }
 }
 
