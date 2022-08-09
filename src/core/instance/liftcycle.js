@@ -31,3 +31,12 @@ export function mountComponent(vm, el) {
     }
     new Watcher(vm, updateComponent, true)
 }
+
+export function callHook(vm, hook) {
+    const handlers = vm.$options[hook];
+    if(handlers) {
+        handlers.forEach(element => {
+            element.call(vm)
+        });
+    }
+}
