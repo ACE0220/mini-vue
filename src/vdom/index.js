@@ -1,27 +1,55 @@
+import Vue from "..";
+
+const isReservedTag = (tag) => {
+    return ['a', 'div', 'p', 'button', 'ul', 'li', 'span',].includes(tag);
+}
+
 export function createElmVNode(vm, tag, data, ...children) {
-    if(data === null) {
+    if (data === null) {
         data = {}
     }
     let key = data.key;
-    if(key) {
+    if (key) {
         delete data.key;
     }
-    
-    return vnode(vm, tag, key, data, children)
+    if (isReservedTag(tag)) {
+        return vnode(vm, tag, key, data, children)
+    } else {
+        // 创造一个组件的虚拟节点
+        let Ctor = vm.$options.components[tag]; // 组件的构造函数
+
+        // ctor就是组件的定义，可能是一个Sub类，还有可能是组件的obj选项
+        return createComponentVNode(vm, tag, key, data, children, Ctor)
+    }
+
 }
 
-export function createTextVNode(vm ,text) {
+function createComponentVNode(vm, tag, key, data, children, Ctor) {
+    if(typeof Ctor === 'object' ) {
+        Ctor = vm.$options._base.extend(Ctor);
+    }
+    data.hook = {
+        init(vnode) { // 稍后创造真实节点的时候，如果是组件则调用此方法
+            let instance = vnode.componentInstance = new vnode.componentOptions.Ctor();
+            instance.$mount(); // instance.$el
+        }
+    }
+    return vnode(vm, tag, key, data, children, null, {Ctor})
+}
+
+export function createTextVNode(vm, text) {
     return vnode(vm, undefined, undefined, undefined, undefined, text);
 }
 
-function vnode(vm, tag, key, data, children, text, ) {
+function vnode(vm, tag, key, data, children, text, componentOptions) {
     return {
         vm,
         tag,
         key,
         data,
         children,
-        text
+        text,
+        componentOptions
     }
 }
 

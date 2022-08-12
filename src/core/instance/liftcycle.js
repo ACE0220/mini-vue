@@ -6,7 +6,19 @@ export function initLifeCycle(Vue) {
     Vue.prototype._update = function(vnode) {
         const vm = this;
         const el = vm.$el;
-        vm.$el = patch(el, vnode);
+
+        
+        const prevVNode = vm._vnode;
+        vm._vnode = vnode; // 组件第一次产生的虚拟节点保存到_vnode
+        if(prevVNode) { // 之前渲染过了
+            vm.$el = patch(prevVNode, vnode);
+        } else {
+            vm.$el = patch(el, vnode);
+        }
+        
+
+
+        
     }
     Vue.prototype._c = function() {
         return createElmVNode(this, ...arguments);

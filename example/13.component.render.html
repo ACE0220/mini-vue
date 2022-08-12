@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" style="color:red">
+       <my-button ></my-button>
+    </div>
+    <div id="root"></div>
+</body>
+<script src="../dist/minivue.dev.js"></script>
+<script>
+    // 组件三个特性，自定义标签、组件有自己的属性和时间、组件插槽
+    // 声明组件的方式： 全局组件
+    
+    Vue.component('my-button', Vue.extend({
+        template: '<button>全局button<button>'
+    }))
+
+    // 在处理属性的时候要维护一下 components: {my-button}.__proto__ = my-button
+    // 模板 - ast - 虚拟dom - 需要对元素再次分类，分类成组件的虚拟节点
+    // 在模板渲染的时候，需要查找my-button组件
+    let Sub = Vue.extend({
+        template: '<div>子组件 <my-button></my-button></div>',
+        components: {
+            'my-button' : {
+                template: '<button>子组件自己声明的button</button>'
+            }
+        }
+    })
+    new Sub().$mount('#root'); // mount会创建子组件的watcher
+</script>
+
+</html>
